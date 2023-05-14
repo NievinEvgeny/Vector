@@ -13,9 +13,13 @@ Checks: |
   -google-runtime-references,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-avoid-magic-number,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -cppcoreguidelines-special-member-functions,
+  -hicpp-special-member-functions,
+  -misc-non-private-member-variables-in-classes,
+  -llvm-include-order
 WarningsAsErrors: true
-HeaderFilterRegex: 'fts/'
+HeaderFilterRegex: 'vector/'
 AnalyzeTemporaryDtors: false
 FormatStyle:     file
 CheckOptions:
