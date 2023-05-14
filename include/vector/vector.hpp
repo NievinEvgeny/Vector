@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <utility>
+#include <stdexcept>
 
 namespace vector {
 
@@ -74,6 +75,20 @@ class Vector
     [[nodiscard]] constexpr bool empty() const noexcept
     {
         return storage->size == 0;
+    }
+
+    constexpr const T& at(std::size_t pos) const
+    {
+        if (!(pos < size()))
+        {
+            throw std::out_of_range("Pos out of range");
+        }
+        return storage->data[pos];
+    }
+
+    constexpr const T& operator[](std::size_t pos) const
+    {
+        return storage->data[pos];
     }
 };
 
