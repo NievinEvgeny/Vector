@@ -46,4 +46,35 @@ struct VecStorage
     }
 };
 
+template <typename T>
+class Vector
+{
+    std::shared_ptr<VecStorage<T>> storage;
+
+   public:
+    constexpr Vector() : storage(std::make_shared<VecStorage<T>>())
+    {
+    }
+
+    constexpr void swap(Vector<T>& other) noexcept
+    {
+        std::swap(storage, other.storage);
+    }
+
+    [[nodiscard]] constexpr std::size_t size() const noexcept
+    {
+        return storage->size;
+    }
+
+    [[nodiscard]] constexpr std::size_t capacity() const noexcept
+    {
+        return storage->capacity;
+    }
+
+    [[nodiscard]] constexpr bool empty() const noexcept
+    {
+        return storage->size == 0;
+    }
+};
+
 }  // namespace vector
