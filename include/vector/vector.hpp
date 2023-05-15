@@ -52,6 +52,14 @@ class Vector
 {
     std::shared_ptr<VecStorage<T>> storage;
 
+    void copy_storage()
+    {
+        if (storage.use_count() != 1)
+        {
+            storage.reset(new VecStorage<T>(*storage.get()));
+        }
+    }
+
    public:
     constexpr Vector() : storage(std::make_shared<VecStorage<T>>())
     {
@@ -86,8 +94,24 @@ class Vector
         return storage->data[pos];
     }
 
+    constexpr T& at(std::size_t pos)
+    {
+        if (!(pos < size()))
+        {
+            throw std::out_of_range("Pos out of range");
+        }
+        copy_storage();
+        return storage->data[pos];
+    }
+
     constexpr const T& operator[](std::size_t pos) const
     {
+        return storage->data[pos];
+    }
+
+    constexpr T& operator[](std::size_t pos)
+    {
+        copy_storage();
         return storage->data[pos];
     }
 
