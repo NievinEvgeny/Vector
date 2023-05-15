@@ -90,6 +90,142 @@ class Vector
     {
         return storage->data[pos];
     }
+
+    class Iterator
+    {
+        Vector<T>* vector;
+        std::size_t index;
+
+       public:
+        using value_type = T;
+        using pointer = T*;
+        using const_pointer = const T*;
+        using reference = T&;
+        using const_reference = const T&;
+        using difference_type = std::ptrdiff_t;
+        using iterator_category = std::random_access_iterator_tag;
+
+        Iterator() : vector(nullptr), index(0)
+        {
+        }
+
+        Iterator(Vector<T>* vector, std::size_t new_index) : vector(vector), index(new_index)
+        {
+        }
+
+        reference operator*()
+        {
+            return vector->at(index);
+        }
+        const_reference operator*() const
+        {
+            return vector->at(index);
+        }
+        pointer operator->()
+        {
+            return &(vector->at(index));
+        }
+        const_pointer operator->() const
+        {
+            return &(vector->at(index));
+        }
+        reference operator[](std::size_t offset)
+        {
+            return vector->at(index + offset);
+        }
+        const_reference operator[](std::size_t offset) const
+        {
+            return vector->at(index + offset);
+        }
+
+        Iterator& operator++()
+        {
+            ++index;
+            return *this;
+        }
+        Iterator operator++(int)
+        {
+            Iterator it(*this);
+            ++index;
+            return it;
+        }
+        Iterator& operator--()
+        {
+            --index;
+            return *this;
+        }
+        Iterator operator--(int)
+        {
+            Iterator it(*this);
+            --index;
+            return it;
+        }
+        Iterator& operator+=(std::size_t offset)
+        {
+            index += offset;
+            return *this;
+        }
+        Iterator& operator-=(std::size_t offset)
+        {
+            index -= offset;
+            return *this;
+        }
+        Iterator operator+(std::size_t offset) const
+        {
+            Iterator it(*this);
+            return it += offset;
+        }
+        friend Iterator operator+(std::size_t offset, Iterator it)
+        {
+            return it + offset;
+        }
+        Iterator operator-(std::size_t offset) const
+        {
+            Iterator it(*this);
+            return it -= offset;
+        }
+        difference_type operator-(const Iterator& other) const
+        {
+            return index - other.index;
+        }
+
+        bool operator==(const Iterator& rhs) const
+        {
+            return index == rhs.index;
+        }
+        auto operator<=>(const Iterator& rhs) const
+        {
+            return index <=> rhs.index;
+        }
+    };
+
+    using iterator = Iterator;
+    using const_iterator = const Iterator;
+
+    constexpr iterator begin() noexcept
+    {
+        return iterator(this, 0);
+    }
+    constexpr iterator end() noexcept
+    {
+        return iterator(this, size());
+    }
+    constexpr const_iterator begin() const noexcept
+    {
+        return const_iterator(const_cast<Vector<T>*>(this), 0);
+    }
+    constexpr const_iterator end() const noexcept
+    {
+        return const_iterator(const_cast<Vector<T>*>(this), size());
+    }
+    constexpr const_iterator cbegin() const noexcept
+    {
+        return begin();
+    }
+    constexpr const_iterator cend() const noexcept
+    {
+        return end();
+    }
 };
 
 }  // namespace vector

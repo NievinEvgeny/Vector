@@ -17,7 +17,11 @@ Checks: |
   -cppcoreguidelines-special-member-functions,
   -hicpp-special-member-functions,
   -misc-non-private-member-variables-in-classes,
-  -llvm-include-order
+  -llvm-include-order,
+  -cert-dcl21-cpp,
+  -readability-identifier-length,
+  -readability-const-return-type,
+  -cppcoreguidelines-pro-type-const-cast
 WarningsAsErrors: true
 HeaderFilterRegex: 'vector/'
 AnalyzeTemporaryDtors: false
