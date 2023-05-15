@@ -28,8 +28,21 @@ int main()
 
     std::cout << test4.size() << ' ' << test4.capacity() << '\n';
 
+    test4.resize(50);
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
+    test4.resize(50);
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
+    test4.resize(100);
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
     test4.clear();
 
     std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
     return 0;
 }

@@ -6,6 +6,8 @@
 
 namespace vector {
 
+constexpr std::size_t factor = 2;
+
 template <typename T>
 struct VecStorage
 {
@@ -187,7 +189,7 @@ class Vector
 
         if (size() == capacity())
         {
-            reserve(storage->capacity * 2);
+            reserve(storage->capacity * vector::factor);
         }
 
         push_back_internal(value);
@@ -199,7 +201,7 @@ class Vector
 
         if (size() == capacity())
         {
-            reserve(storage->capacity * 2);
+            reserve(storage->capacity * vector::factor);
         }
 
         move_back_internal(std::move(value));
@@ -210,6 +212,56 @@ class Vector
         copy_storage();
         --storage->size;
         std::destroy_at(&storage->data[size()]);
+    }
+
+    constexpr void resize(std::size_t count)
+    {
+        if (count == size())
+        {
+            return;
+        }
+
+        copy_storage();
+
+        if (count < size())
+        {
+            std::destroy_n(storage->data + count, size() - 1);
+        }
+        if (count >= capacity())
+        {
+            reserve(count * vector::factor);
+        }
+        if (count > size())
+        {
+            std::uninitialized_value_construct_n(storage->data + size(), count);
+        }
+
+        storage->size = count;
+    }
+
+    constexpr void resize(std::size_t count, const T& value)
+    {
+        if (count == size())
+        {
+            return;
+        }
+
+        copy_storage();
+
+        if (count < size())
+        {
+            std::destroy_n(storage->data + count, size() - 1);
+        }
+        if (count >= capacity())
+        {
+            reserve(count * vector::factor);
+        }
+        if (count > size())
+        {
+            std::uninitialized_fill_n(storage->data + size(), count, value);
+        }
+
+        storage->size = count;
     }
 
     class Iterator
