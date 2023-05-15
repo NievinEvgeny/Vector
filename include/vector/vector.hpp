@@ -16,6 +16,11 @@ struct VecStorage
     {
     }
 
+    constexpr VecStorage(std::size_t new_size, std::size_t new_capacity)
+        : size(new_size), capacity(new_capacity), data(static_cast<T*>(operator new(sizeof(T) * new_capacity)))
+    {
+    }
+
     constexpr ~VecStorage()
     {
         std::destroy_n(data, size);
@@ -62,6 +67,11 @@ class Vector
 
    public:
     constexpr Vector() : storage(std::make_shared<VecStorage<T>>())
+    {
+    }
+
+    constexpr explicit Vector(std::size_t capacity)
+        : storage(std::make_shared<VecStorage<T>>(VecStorage<T>{0, capacity}))
     {
     }
 
