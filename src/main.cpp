@@ -38,6 +38,8 @@ int main()
 
     test4.resize(100);
 
+    test4.erase(test4.begin() + 3, test4.begin() + 10);
+
     std::cout << test4.size() << ' ' << test4.capacity() << '\n';
 
     test4.clear();

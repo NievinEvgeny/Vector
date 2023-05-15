@@ -399,6 +399,34 @@ class Vector
     {
         return end();
     }
+
+    constexpr iterator erase(const_iterator pos)
+    {
+        if (empty())
+        {
+            return end();
+        }
+
+        copy_storage();
+
+        std::move(pos + 1, end(), pos);
+        --storage->size;
+        return pos;
+    }
+
+    constexpr iterator erase(const_iterator first, const_iterator last)
+    {
+        if (empty() || (last - first <= 0))
+        {
+            return end();
+        }
+
+        copy_storage();
+
+        std::move(last, end(), first);
+        storage->size -= last - first;
+        return first;
+    }
 };
 
 }  // namespace vector
