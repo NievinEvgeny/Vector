@@ -66,7 +66,7 @@ class Vector
         }
     }
 
-    void push_back_internal(T const& value)
+    void push_back_internal(const T& value)
     {
         new (storage->data + storage->size) T(value);
         ++storage->size;
@@ -143,6 +143,7 @@ class Vector
         {
             throw std::out_of_range("Pos out of range");
         }
+
         copy_storage();
         return storage->data[pos];
     }
@@ -178,6 +179,30 @@ class Vector
         Vector<T> tmp_buf(size());
         simple_copy<T>(tmp_buf);
         tmp_buf.swap(*this);
+    }
+
+    constexpr void push_back(const T& value)
+    {
+        copy_storage();
+
+        if (size() == capacity())
+        {
+            reserve(storage->capacity * 2);
+        }
+
+        push_back_internal(value);
+    }
+
+    constexpr void push_back(T&& value)
+    {
+        copy_storage();
+
+        if (size() == capacity())
+        {
+            reserve(storage->capacity * 2);
+        }
+
+        move_back_internal(std::move(value));
     }
 
     class Iterator
