@@ -205,6 +205,13 @@ class Vector
         move_back_internal(std::move(value));
     }
 
+    constexpr void pop_back()
+    {
+        copy_storage();
+        --storage->size;
+        std::destroy_at(&storage->data[size()]);
+    }
+
     class Iterator
     {
         Vector<T>* vector;

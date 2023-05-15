@@ -24,6 +24,10 @@ int main()
 
     std::cout << test4.size() << ' ' << test4.capacity() << '\n';
 
+    test4.pop_back();
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
     test4.clear();
 
     std::cout << test4.size() << ' ' << test4.capacity() << '\n';
