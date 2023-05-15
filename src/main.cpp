@@ -18,5 +18,9 @@ int main()
     test4.shrink_to_fit();
 
     std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
+    test4.clear();
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
     return 0;
 }

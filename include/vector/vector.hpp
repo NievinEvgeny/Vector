@@ -101,6 +101,13 @@ class Vector
     {
     }
 
+    constexpr void clear() noexcept
+    {
+        copy_storage();
+        std::destroy_n(storage->data, size());
+        storage->size = 0;
+    }
+
     constexpr void swap(Vector<T>& other) noexcept
     {
         std::swap(storage, other.storage);
