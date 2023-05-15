@@ -3,10 +3,20 @@
 
 int main()
 {
-    vector::VecStorage<int> test;
-    vector::VecStorage<int> test1 = test;
-    vector::VecStorage<int> test2 = std::move(test1);
-    vector::VecStorage<int> test3{std::move(test2)};
-    vector::VecStorage<int> test4{test3};
+    vector::Vector<int> test;
+    vector::Vector<int> test1 = test;
+    vector::Vector<int> test2 = std::move(test1);
+    vector::Vector<int> test3{std::move(test2)};
+    vector::Vector<int> test4{test3};
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
+    test4.reserve(10);
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
+
+    test4.shrink_to_fit();
+
+    std::cout << test4.size() << ' ' << test4.capacity() << '\n';
     return 0;
 }

@@ -2,6 +2,7 @@
 #include <memory>
 #include <utility>
 #include <stdexcept>
+#include <algorithm>
 
 namespace vector {
 
@@ -65,6 +66,31 @@ class Vector
         }
     }
 
+    void push_back_internal(T const& value)
+    {
+        new (storage->data + storage->size) T(value);
+        ++storage->size;
+    }
+
+    void move_back_internal(T&& value)
+    {
+        new (storage->data + storage->size) T(std::move(value));
+        ++storage->size;
+    }
+
+    template <typename X>
+    typename std::enable_if<!std::is_nothrow_move_constructible<X>::value>::type simple_copy(Vector<T>& dst)
+    {
+        std::for_each(storage->data, storage->data + storage->size, [&dst](T const& v) { dst.push_back_internal(v); });
+    }
+
+    template <typename X>
+    typename std::enable_if<std::is_nothrow_move_constructible<X>::value>::type simple_copy(Vector<T>& dst)
+    {
+        std::for_each(
+            storage->data, storage->data + storage->size, [&dst](T& v) { dst.move_back_internal(std::move(v)); });
+    }
+
    public:
     constexpr Vector() : storage(std::make_shared<VecStorage<T>>())
     {
@@ -123,6 +149,28 @@ class Vector
     {
         copy_storage();
         return storage->data[pos];
+    }
+
+    constexpr void reserve(std::size_t new_capacity)
+    {
+        if (new_capacity > capacity())
+        {
+            Vector<T> tmp_buf(new_capacity);
+            simple_copy<T>(tmp_buf);
+            tmp_buf.swap(*this);
+        }
+    }
+
+    constexpr void shrink_to_fit()
+    {
+        if ((size() == 0) || (size() == capacity()))
+        {
+            return;
+        }
+
+        Vector<T> tmp_buf(size());
+        simple_copy<T>(tmp_buf);
+        tmp_buf.swap(*this);
     }
 
     class Iterator

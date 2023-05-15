@@ -21,7 +21,8 @@ Checks: |
   -cert-dcl21-cpp,
   -readability-identifier-length,
   -readability-const-return-type,
-  -cppcoreguidelines-pro-type-const-cast
+  -cppcoreguidelines-pro-type-const-cast,
+  -bugprone-easily-swappable-parameters
 WarningsAsErrors: true
 HeaderFilterRegex: 'vector/'
 AnalyzeTemporaryDtors: false
