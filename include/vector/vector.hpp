@@ -225,7 +225,7 @@ class Vector
 
         if (count < size())
         {
-            std::destroy_n(storage->data + count, size() - 1);
+            std::destroy_n(storage->data + count, size() - 1 - count);
         }
         if (count >= capacity())
         {
@@ -233,7 +233,7 @@ class Vector
         }
         if (count > size())
         {
-            std::uninitialized_value_construct_n(storage->data + size(), count);
+            std::uninitialized_value_construct_n(storage->data + size(), count - size());
         }
 
         storage->size = count;
@@ -250,7 +250,7 @@ class Vector
 
         if (count < size())
         {
-            std::destroy_n(storage->data + count, size() - 1);
+            std::destroy_n(storage->data + count, size() - 1 - count);
         }
         if (count >= capacity())
         {
@@ -258,7 +258,7 @@ class Vector
         }
         if (count > size())
         {
-            std::uninitialized_fill_n(storage->data + size(), count, value);
+            std::uninitialized_fill_n(storage->data + size(), count - size(), value);
         }
 
         storage->size = count;
