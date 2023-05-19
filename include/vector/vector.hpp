@@ -411,7 +411,7 @@ class Vector
 
         std::move(pos + 1, end(), pos);
         --storage->size;
-        return pos;
+        return iterator(pos);
     }
 
     constexpr iterator erase(const_iterator first, const_iterator last)
@@ -425,7 +425,7 @@ class Vector
 
         std::move(last, end(), first);
         storage->size -= last - first;
-        return first;
+        return iterator(first);
     }
 };
 
