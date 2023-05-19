@@ -19,8 +19,8 @@ struct VecStorage
     {
     }
 
-    constexpr VecStorage(std::size_t new_size, std::size_t new_capacity)
-        : size(new_size), capacity(new_capacity), data(static_cast<T*>(operator new(sizeof(T) * new_capacity)))
+    constexpr explicit VecStorage(std::size_t new_capacity)
+        : capacity(new_capacity), data(static_cast<T*>(operator new(sizeof(T) * new_capacity)))
     {
     }
 
@@ -98,8 +98,7 @@ class Vector
     {
     }
 
-    constexpr explicit Vector(std::size_t capacity)
-        : storage(std::make_shared<VecStorage<T>>(VecStorage<T>{0, capacity}))
+    constexpr explicit Vector(std::size_t capacity) : storage(std::make_shared<VecStorage<T>>(VecStorage<T>{capacity}))
     {
     }
 
