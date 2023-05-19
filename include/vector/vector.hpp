@@ -427,6 +427,52 @@ class Vector
         storage->size -= last - first;
         return iterator(first);
     }
+
+    constexpr iterator insert(const_iterator pos, const T& value)
+    {
+        copy_storage();
+
+        if (size() == capacity())
+        {
+            reserve(storage->capacity * vector::factor);
+        }
+
+        if (pos == end())
+        {
+            push_back_internal(value);
+        }
+        else
+        {
+            ++storage->size;
+            std::move_backward(pos, end() - 1, end());
+            storage->data[pos - begin()] = value;
+        }
+
+        return iterator(pos);
+    }
+
+    constexpr iterator insert(const_iterator pos, T&& value)
+    {
+        copy_storage();
+
+        if (size() == capacity())
+        {
+            reserve(storage->capacity * vector::factor);
+        }
+
+        if (pos == end())
+        {
+            move_back_internal(std::move(value));
+        }
+        else
+        {
+            ++storage->size;
+            std::move_backward(pos, end() - 1, end());
+            storage->data[pos - begin()] = std::move(value);
+        }
+
+        return iterator(pos);
+    }
 };
 
 }  // namespace vector
