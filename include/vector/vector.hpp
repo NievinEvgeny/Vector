@@ -480,6 +480,37 @@ class Vector
 
         return iterator(pos);
     }
+
+    constexpr iterator insert(const_iterator pos, std::size_t count, const T& value)
+    {
+        if (count != 0)
+        {
+            copy_storage();
+
+            if (size() + count >= capacity())
+            {
+                reserve((size() + count) * vector::factor);
+            }
+
+            if (pos == end())
+            {
+                storage->size += count;
+                std::uninitialized_fill_n(pos, count, value);
+            }
+            else
+            {
+                storage->size += count;
+                if (!std::is_trivially_move_assignable<T>::value)
+                {
+                    std::uninitialized_default_construct_n(end() - count, count);
+                }
+                std::move_backward(pos, end() - count, end());
+                std::fill_n(pos, count, value);
+            }
+        }
+
+        return iterator(pos);
+    }
 };
 
 }  // namespace vector

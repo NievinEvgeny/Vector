@@ -12,7 +12,7 @@ int main()
 
     test4.reserve(200);
 
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 10; i++)
     {
         test4.push_back(std::to_string(i));
     }
@@ -20,16 +20,18 @@ int main()
     test4.shrink_to_fit();
 
     std::string test_str = "test";
-    std::string test_str_n = "elem";
 
-    vector::Vector<std::string>::iterator iter_erase = test4.erase(test4.begin() + 3, test4.begin() + 10);
-    std::cout << *iter_erase << '\n';
-
-    vector::Vector<std::string>::iterator iter_insert_copy = test4.insert(test4.begin() + 3, test_str);
+    vector::Vector<std::string>::iterator iter_insert_copy = test4.insert(test4.begin(), test_str);
     std::cout << *iter_insert_copy << '\n';
 
-    vector::Vector<std::string>::iterator iter_insert_move = test4.insert(test4.end(), std::move(test_str_n));
+    vector::Vector<std::string>::iterator iter_insert_move = test4.insert(test4.end(), std::move(test_str));
     std::cout << *iter_insert_move << '\n';
+
+    vector::Vector<std::string>::iterator iter_insert_copy_n1 = test4.insert(test4.begin() + 10, 100, "elem");
+    std::cout << *iter_insert_copy_n1 << '\n';
+
+    vector::Vector<std::string>::iterator iter_insert_copy_n2 = test4.insert(test4.end(), 100, "elem");
+    std::cout << *iter_insert_copy_n2 << '\n';
 
     test4.clear();
 
