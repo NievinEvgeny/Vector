@@ -443,6 +443,10 @@ class Vector
         else
         {
             ++storage->size;
+            if (!std::is_trivially_move_assignable<T>::value)
+            {
+                std::uninitialized_default_construct_n(end() - 1, 1);
+            }
             std::move_backward(pos, end() - 1, end());
             storage->data[pos - begin()] = value;
         }
@@ -466,6 +470,10 @@ class Vector
         else
         {
             ++storage->size;
+            if (!std::is_trivially_move_assignable<T>::value)
+            {
+                std::uninitialized_default_construct_n(end() - 1, 1);
+            }
             std::move_backward(pos, end() - 1, end());
             storage->data[pos - begin()] = std::move(value);
         }
