@@ -13,9 +13,19 @@ Checks: |
   -google-runtime-references,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
   -cppcoreguidelines-avoid-magic-number,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -cppcoreguidelines-special-member-functions,
+  -hicpp-special-member-functions,
+  -misc-non-private-member-variables-in-classes,
+  -llvm-include-order,
+  -cert-dcl21-cpp,
+  -readability-identifier-length,
+  -readability-const-return-type,
+  -cppcoreguidelines-pro-type-const-cast,
+  -bugprone-easily-swappable-parameters,
+  -readability-suspicious-call-argument
 WarningsAsErrors: true
-HeaderFilterRegex: 'fts/'
+HeaderFilterRegex: 'vector/'
 AnalyzeTemporaryDtors: false
 FormatStyle:     file
 CheckOptions:
