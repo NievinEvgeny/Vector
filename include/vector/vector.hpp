@@ -511,6 +511,43 @@ class Vector
 
         return iterator(pos);
     }
+
+    template <
+        class InputIt,
+        typename = std::enable_if_t<
+            std::is_convertible_v<typename std::iterator_traits<InputIt>::iterator_category, std::input_iterator_tag>>>
+    constexpr iterator insert(const_iterator pos, InputIt first, InputIt last)
+    {
+        std::size_t count = last - first;
+
+        if (count != 0)
+        {
+            copy_storage();
+
+            if (size() + count >= capacity())
+            {
+                reserve((size() + count) * vector::factor);
+            }
+
+            if (pos == end())
+            {
+                storage->size += count;
+                std::uninitialized_copy(first, last, pos);
+            }
+            else
+            {
+                storage->size += count;
+                if (!std::is_trivially_move_assignable<T>::value)
+                {
+                    std::uninitialized_default_construct_n(end() - count, count);
+                }
+                std::move_backward(pos, end() - count, end());
+                std::copy(first + count, last + count, pos);
+            }
+        }
+
+        return iterator(pos);
+    }
 };
 
 }  // namespace vector
