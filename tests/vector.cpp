@@ -244,3 +244,37 @@ TEST(Vector, Clear)
 
     EXPECT_THROW(vec.at(0), std::out_of_range);
 }
+
+TEST(Vector, Swap)
+{
+    vector::Vector<std::string> vec1;
+    std::vector<std::string> values1{"1", "1", "1"};
+
+    for (auto& val : values1)
+    {
+        vec1.push_back(val);
+    }
+
+    vector::Vector<std::string> vec2;
+    std::vector<std::string> values2{"2", "2", "2", "2", "2"};
+
+    for (auto& val : values2)
+    {
+        vec2.push_back(val);
+    }
+
+    vec1.swap(vec2);
+
+    EXPECT_EQ(vec1.size(), values2.size());
+    EXPECT_EQ(vec2.size(), values1.size());
+
+    for (const auto& num1 : vec1)
+    {
+        EXPECT_EQ(num1, values2.at(0));
+    }
+
+    for (const auto& num2 : vec2)
+    {
+        EXPECT_EQ(num2, values1.at(0));
+    }
+}
