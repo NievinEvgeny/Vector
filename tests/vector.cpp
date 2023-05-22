@@ -209,3 +209,38 @@ TEST(Vector, AtOutOfBounds)
 
     EXPECT_THROW(vec.at(index_out_of_range), std::out_of_range);
 }
+
+TEST(Vector, PopBack)
+{
+    vector::Vector<std::string> vec;
+
+    const std::vector<std::string> exp_values{"val1", "val2", "val3"};
+    std::vector<std::string> values{"val1", "val2", "val3"};
+
+    const std::size_t invalid_index = values.size() - 1;
+
+    for (auto& val : values)
+    {
+        vec.push_back(std::move(val));
+    }
+
+    vec.pop_back();
+
+    EXPECT_THROW(vec.at(invalid_index), std::out_of_range);
+}
+
+TEST(Vector, Clear)
+{
+    vector::Vector<std::string> vec;
+
+    std::vector<std::string> values{"val1", "val2", "val3"};
+
+    for (auto& val : values)
+    {
+        vec.push_back(std::move(val));
+    }
+
+    vec.clear();
+
+    EXPECT_THROW(vec.at(0), std::out_of_range);
+}
