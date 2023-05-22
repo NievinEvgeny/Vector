@@ -50,7 +50,9 @@ struct VecStorage
     }
 
     constexpr VecStorage(VecStorage<T>&& other) noexcept
-        : size(std::move(other.size)), capacity(std::move(other.capacity)), data(std::exchange(other.data, nullptr))
+        : size(std::exchange(other.size, 0)),
+          capacity(std::exchange(other.capacity, 0)),
+          data(std::exchange(other.data, nullptr))
     {
     }
 };
