@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <memory>
+#include <vector>
+#include <stdexcept>
 
 TEST(VecStorage, DefaultConstructor)
 {
@@ -102,4 +104,108 @@ TEST(VecStorage, MoveAssignment)
 
     EXPECT_EQ(move.capacity, orig_capacity);
     EXPECT_EQ(*move.data, orig_data);
+}
+
+TEST(Vector, Reserve)
+{
+    constexpr std::size_t exp_size = 3;
+    constexpr std::size_t exp_capacity = 30;
+    vector::Vector<std::string> vec;
+
+    const std::vector<std::string> values{"val1", "val2", "val3"};
+
+    for (const auto& val : values)
+    {
+        vec.push_back(val);
+    }
+
+    vec.reserve(exp_capacity);
+
+    EXPECT_EQ(vec.size(), exp_size);
+    EXPECT_EQ(vec.capacity(), exp_capacity);
+
+    for (std::size_t i = 0; i < values.size(); i++)
+    {
+        EXPECT_EQ(vec[i], values.at(i));
+    }
+}
+
+TEST(Vector, ShrinkToFit)
+{
+    constexpr std::size_t reserve_capacity = 100;
+    constexpr std::size_t exp_size = 3;
+    constexpr std::size_t exp_capacity = 3;
+    vector::Vector<std::string> vec;
+
+    const std::vector<std::string> values{"val1", "val2", "val3"};
+
+    vec.reserve(reserve_capacity);
+
+    for (const auto& val : values)
+    {
+        vec.push_back(val);
+    }
+
+    vec.shrink_to_fit();
+
+    EXPECT_EQ(vec.size(), exp_size);
+    EXPECT_EQ(vec.capacity(), exp_capacity);
+
+    for (std::size_t i = 0; i < values.size(); i++)
+    {
+        EXPECT_EQ(vec[i], values.at(i));
+    }
+}
+
+TEST(Vector, PushBackCopy)
+{
+    constexpr std::size_t exp_size = 3;
+    constexpr std::size_t exp_capacity = 4;
+    vector::Vector<std::string> vec;
+
+    const std::vector<std::string> values{"val1", "val2", "val3"};
+
+    for (const auto& val : values)
+    {
+        vec.push_back(val);
+    }
+
+    EXPECT_EQ(vec.size(), exp_size);
+    EXPECT_EQ(vec.capacity(), exp_capacity);
+
+    for (std::size_t i = 0; i < values.size(); i++)
+    {
+        EXPECT_EQ(vec[i], values.at(i));
+    }
+}
+
+TEST(Vector, PushBackMove)
+{
+    constexpr std::size_t exp_size = 3;
+    constexpr std::size_t exp_capacity = 4;
+    vector::Vector<std::string> vec;
+
+    const std::vector<std::string> exp_values{"val1", "val2", "val3"};
+    std::vector<std::string> values{"val1", "val2", "val3"};
+
+    for (auto& val : values)
+    {
+        vec.push_back(std::move(val));
+    }
+
+    EXPECT_EQ(vec.size(), exp_size);
+    EXPECT_EQ(vec.capacity(), exp_capacity);
+
+    for (std::size_t i = 0; i < exp_values.size(); i++)
+    {
+        EXPECT_EQ(vec[i], exp_values.at(i));
+    }
+}
+
+TEST(Vector, AtOutOfBounds)
+{
+    constexpr std::size_t index_out_of_range = 10;
+    vector::Vector<std::string> vec;
+
+    EXPECT_THROW(vec.at(index_out_of_range), std::out_of_range);
 }
