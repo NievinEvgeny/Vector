@@ -626,10 +626,7 @@ TEST(Vector, InsertRangeElements)
         vec.push_back(val);
     }
 
-    vector::Vector<std::string>::iterator iter_begin = vec.begin() + range_begin;
-    vector::Vector<std::string>::iterator iter_end = vec.begin() + range_end;
-
-    vec.insert(vec.begin() + 1, iter_begin, iter_end);
+    vec.insert(vec.begin() + 1, values.begin() + range_begin, values.begin() + range_end);
 
     for (std::size_t i = 0; i < vec.size(); i++)
     {
@@ -651,10 +648,7 @@ TEST(Vector, InsertRangeElementsToEnd)
         vec.push_back(val);
     }
 
-    vector::Vector<std::string>::iterator iter_begin = vec.begin() + range_begin;
-    vector::Vector<std::string>::iterator iter_end = vec.begin() + range_end;
-
-    vec.insert(vec.end(), iter_begin, iter_end);
+    vec.insert(vec.end(), values.begin() + range_begin, values.begin() + range_end);
 
     for (std::size_t i = 0; i < vec.size(); i++)
     {

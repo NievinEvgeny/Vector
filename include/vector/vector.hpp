@@ -544,7 +544,7 @@ class Vector
                     std::uninitialized_default_construct_n(end() - count, count);
                 }
                 std::move_backward(pos, end() - count, end());
-                std::copy(first + count, last + count, pos);
+                std::copy(first, last, pos);
             }
         }
 
